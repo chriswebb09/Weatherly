@@ -21,7 +21,7 @@ class MainForcastView: UIView {
     }
     
     func setWeatherDescription(description: String) {
-        weatherDescriptionLabel.text = "\(description)"
+        weatherDescriptionLabel.text = "\(description) skies."
     }
     
     func setWeatherIcon(icon: UIImage) {
@@ -31,7 +31,9 @@ class MainForcastView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let gradient = CALayer.buildGradientLayer(with: [UIColor.blue.cgColor, UIColor.cyan.cgColor], bounds: backgroundView.bounds)
+        let gradient = CALayer.buildGradientLayer(with: [UIColor(red:0.00, green:0.82, blue:1.00, alpha:1.0).cgColor, UIColor.darkGray.cgColor], bounds: backgroundView.bounds)
         backgroundView.layer.insertSublayer(gradient, at: 0)
+        collectionView.layer.setCellShadow(contentView: collectionView)
+        frame = UIScreen.main.bounds
     }
 }

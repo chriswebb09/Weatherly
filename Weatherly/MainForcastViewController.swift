@@ -21,6 +21,10 @@ class MainForcastViewController: UIViewController {
         }
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     var dailyForcast: [DayOfWeek]! {
         didSet {
             DispatchQueue.main.async {

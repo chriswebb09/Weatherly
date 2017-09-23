@@ -17,5 +17,7 @@ class DailyForcastCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         weatherImageView.image = weatherImageView.image?.withRenderingMode(.alwaysTemplate)
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.white.cgColor
     }
 }
