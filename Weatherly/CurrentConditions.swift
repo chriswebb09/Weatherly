@@ -29,7 +29,7 @@ struct CurrentConditions {
             self.iconName = icon
             self.time = time
             self.summary = summary
-            self.temperature = String(describing: temperature)
+            self.temperature = String(describing: Int(temperature))
             self.precipProbability = precipProb
             self.windSpeed = windSpeed
             self.humidity = humidity

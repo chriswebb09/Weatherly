@@ -9,63 +9,96 @@
 import UIKit
 import CoreLocation
 
-class WeatherConditionsDataStore {
-    
-    var currentLocation: CLLocation! {
-        didSet {
-            getWeatherConditions()
-        }
-    }
-    
-    var hourly: [HourlyWeather] = []
-    var current: [CurrentConditions] = []
-    var daily: [DailyForcast] = [] 
-    var requested = false
-    
-    func getWeatherConditions() {
-        if requested == false {
-            let locationString = "/\(currentLocation.coordinate.latitude),\(currentLocation.coordinate.longitude)"
-            DarkSkyAPI.search(for: locationString) { response in
-                switch response {
-                case .success(let json):
-                    if let json = json {
-                        self.current = WeatherParser.parseCurrent(json: json)
-                        self.hourly = WeatherParser.parseHourly(json: json)
-                        self.daily = WeatherParser.parseDaily(json: json)
-                    }
-                case .failed(let error):
-                    print(error.localizedDescription)
-                }
-            }
-            requested = true
-        }
-    }
-}
-
 class MainForcastViewController: UIViewController {
     
+    @IBOutlet var forcastView: MainForcastView!
+    
     let store = WeatherConditionsDataStore()
-  
+    
+    var current: [CurrentConditions]! {
+        didSet {
+            self.forcastView.collectionView.reloadData()
+        }
+    }
+    
+    var dailyForcast: [DayOfWeek]! {
+        didSet {
+            DispatchQueue.main.async {
+                self.forcastView.collectionView.reloadData()
+            }
+        }
+    }
+    
     var requested = false
     var locationManager: CLLocationManager!
+    var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        forcastView.collectionView.delegate = self
+        forcastView.collectionView.dataSource = self
+        forcastView.layoutSubviews()
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        forcastView.setCurrentTemp(temp: "50°")
+        forcastView.setWeatherDescription(description: "Partly sunny skies.")
+        store.delegate = self
     }
 }
 
+extension MainForcastViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if store.daily.count < 0 {
+            return 6
+        } else if store.daily.count > 0 {
+            return store.daily[0].forcasts.count
+        }
+        return 6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DailyForcastCell", for: indexPath) as! DailyForcastCell
+        
+        if let daily = dailyForcast {
+            cell.weatherImageView.image = self.store.icons[daily[indexPath.row].iconName]
+            cell.dayNameLabel.text = "\(daily[indexPath.row].stringDate)"
+            cell.temperatureLabel.text = "\(daily[indexPath.row].highTemp)°"
+        } else {
+            cell.weatherImageView.image = #imageLiteral(resourceName: "partlysunny")
+            cell.dayNameLabel.text = "\(days[indexPath.row])"
+            cell.temperatureLabel.text = "80°"
+        }
+        
+        cell.layer.setCellShadow(contentView: cell.contentView)
+        cell.layoutSubviews()
+        return cell 
+    }
+}
+
+extension MainForcastViewController: UICollectionViewDelegate, WeatherConditionDataStoreDelegate {
+    
+    func store(hasSet dailyForcasts: [DayOfWeek]) {
+        self.dailyForcast = dailyForcasts
+    }
+    
+    func store(hasSet currentTemperature: String) {
+        forcastView.setCurrentTemp(temp: "\(currentTemperature)°")
+    }
+    
+    func store(didSet currentConditions: String) {
+        forcastView.setWeatherDescription(description: currentConditions)
+    }
+    
+    func store(didSet weatherIcon: UIImage) {
+        forcastView.setWeatherIcon(icon: weatherIcon)
+    }
+}
 
 extension MainForcastViewController: CLLocationManagerDelegate {
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let sortedLocationEstimates = locations.sorted(by: {
             if $0.horizontalAccuracy == $1.horizontalAccuracy {
@@ -74,10 +107,6 @@ extension MainForcastViewController: CLLocationManagerDelegate {
             return $0.horizontalAccuracy < $1.horizontalAccuracy
         })
         store.currentLocation = sortedLocationEstimates.first!
-        print(store.current)
-        print("\n")
-        print(store.daily)
-        print("\n")
-        print(store.hourly)
+        current = store.current
     }
 }
