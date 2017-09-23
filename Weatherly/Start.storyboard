@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Start View Controller-->
+        <scene sceneID="Vpc-Qu-f2j">
+            <objects>
+                <viewController storyboardIdentifier="StartViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Kar-0j-ywb" customClass="StartViewController" customModule="Weatherly" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NSE-lo-UYa" customClass="StartView" customModule="Weatherly" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="QDd-SG-MpQ">
+                                <rect key="frame" x="93.5" y="260" width="187.5" height="167"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.36938773316346957" green="0.50850877073532785" blue="0.62373096446700504" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="QDd-SG-MpQ" firstAttribute="centerY" secondItem="XEX-Cv-lqg" secondAttribute="centerY" id="Ful-dT-7gl"/>
+                            <constraint firstItem="QDd-SG-MpQ" firstAttribute="centerX" secondItem="XEX-Cv-lqg" secondAttribute="centerX" id="PmO-63-JCY"/>
+                            <constraint firstItem="QDd-SG-MpQ" firstAttribute="width" secondItem="NSE-lo-UYa" secondAttribute="width" multiplier="0.5" id="qsz-Eb-97f"/>
+                            <constraint firstItem="QDd-SG-MpQ" firstAttribute="height" secondItem="NSE-lo-UYa" secondAttribute="height" multiplier="0.25" id="seb-UH-Ura"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="XEX-Cv-lqg"/>
+                        <connections>
+                            <outlet property="logoImageView" destination="QDd-SG-MpQ" id="lhn-m7-kLx"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="startView" destination="NSE-lo-UYa" id="V8r-5c-28E"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zju-KJ-dmK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="152.80000000000001" y="146.17691154422789"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo" width="512" height="512"/>
+    </resources>
+</document>

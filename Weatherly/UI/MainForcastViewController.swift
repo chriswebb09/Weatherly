@@ -9,7 +9,9 @@
 import UIKit
 import CoreLocation
 
-class MainForcastViewController: UIViewController {
+class MainForcastViewController: UIViewController, Controller {
+    
+    var type: ControllerType = .app
     
     @IBOutlet var forcastView: MainForcastView!
     
@@ -50,16 +52,12 @@ class MainForcastViewController: UIViewController {
         forcastView.setCurrentTemp(temp: "50°")
         forcastView.setWeatherDescription(description: "Partly sunny skies.")
         store.delegate = self
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 }
 
 extension MainForcastViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if store.daily.count < 0 {
-            return 6
-        } else if store.daily.count > 0 {
-            return store.daily[0].forcasts.count
-        }
         return 6
     }
     

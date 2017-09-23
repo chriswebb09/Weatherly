@@ -15,7 +15,7 @@ struct DailyForcast {
     
     var forcasts: [DayOfWeek] = []
     init?(json: JSON) {
-
+        
         if let summary = json["summary"] as? String,
             let icon = json["icon"] as? String,
             let data = json["data"] as? [[String: Any]] {

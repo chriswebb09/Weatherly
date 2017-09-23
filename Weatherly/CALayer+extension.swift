@@ -27,7 +27,3 @@ extension CALayer {
     }
 }
 
-struct CALayerConstants {
-    static let shadowWidthMultiplier: CGFloat = 0.001
-    static let shadowHeightMultiplier: CGFloat = 0.001
-}

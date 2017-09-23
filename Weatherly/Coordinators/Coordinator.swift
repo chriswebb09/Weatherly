@@ -15,4 +15,3 @@ protocol CoordinatorDelegate: class { }
 enum CoordinatorType {
     case start, app
 }
-
