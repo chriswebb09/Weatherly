@@ -29,8 +29,10 @@ enum URLRouter {
 class DarkSkyAPI {
     
     static func search(for query: String, _ completion: @escaping (Response) -> Void) {
+        
         let urlString = URLRouter.base.url + Secrets.secretKey + query
         guard let url = URL(string: urlString) else { return }
+        
         URLSession(configuration: .ephemeral).dataTask(with: URLRequest(url: url)) { data, response, error in
             if let error = error {
                 completion(.failed(error))
